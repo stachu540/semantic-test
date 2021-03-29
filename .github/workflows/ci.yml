@@ -1,0 +1,41 @@
+name: CI
+on:
+  push:
+    paths-ignore:
+      - ".github/**"
+      - "**.md"
+      - ".gitignore"
+      - ".editorconfig"
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - ".github/**"
+      - "**.md"
+      - ".gitignore"
+      - ".editorconfig"
+
+env:
+  CI: true
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jvm: [ 8, 11, 15 ]
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: actions/cache@v2.1.4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: JDK${{ matrix.jvm }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: JDK${{ matrix.jvm }}-gradle-
+      - uses: actions/setup-java@v1.4.3
+        with:
+          java-version: ${{ matrix.jvm }}
+      - run: chmod +x ./gradlew
+      - run: ./gradlew test

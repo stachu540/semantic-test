@@ -1,0 +1,71 @@
+import java.nio.charset.Charset
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'maven-publish'
+    id 'com.coditory.manifest' version '0.1.13'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+application {
+    mainClassName = 'com.github.stachu540.Semantic'
+}
+
+java {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+    withSourcesJar()
+    withJavadocJar()
+}
+
+repositories {
+    mavenCentral()
+    maven { url = "https://maven.pkg.github.com/stachu540/semantic-test" }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+def defaultManifest = manifest
+
+tasks.withType(Jar) {
+    dependsOn(defaultManifest)
+    manifest.from(file("${buildDir}/resources/main/META-INF/MANIFEST.MF"))
+}
+
+test {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/stachu540/semantic-test"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
+
+if (!"${version}".endsWith("-SNAPSHOT")) {
+    apply plugin: 'signing'
+    signing {
+        def key = new String(Base64.getDecoder().decode(
+                System.getenv("GPG_KEY").getBytes(Charset.defaultCharset())
+        ), Charset.defaultCharset())
+        def passphrase = System.getenv("GPG_PASSPHRASE")
+        useInMemoryPgpKeys(key, passphrase)
+        sign(publishing.publications)
+    }
+}

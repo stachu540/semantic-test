@@ -1,0 +1,23 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    pull-request-branch-name:
+      separator: "/"
+    reviewers:
+      - "stachu540"
+    commit-message:
+      prefix: "deps:"
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    pull-request-branch-name:
+      separator: "/"
+    reviewers:
+      - "stachu540"
+    commit-message:
+      prefix: "deps:"
