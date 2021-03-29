@@ -8,9 +8,9 @@ on:
 
 env:
   CI: true
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
   GPG_KEY: ${{ secrets.GPG_KEY }}
+  GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   SLACK_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}/slack
   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
@@ -30,7 +30,7 @@ jobs:
             ~/.gradle/wrapper
           key: JDK${{ matrix.jvm }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: JDK${{ matrix.jvm }}-gradle-
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v1.4.3
         with:
           java-version: ${{ matrix.jvm }}
 
@@ -52,7 +52,7 @@ jobs:
             ~/.gradle/wrapper
           key: JDK8-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: JDK8-gradle-
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v1.4.3
         with:
           java-version: 8
       - uses: actions/setup-node@v2.1.5
@@ -60,10 +60,6 @@ jobs:
       - uses: cycjimmy/semantic-release-action@v2.5.3
         env:
           RELEASE_NOTES: ${{ github.event.inputs.release_notes }}
-          SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
-          SONATYPE_PASSOWRD: ${{ secrets.SONATYPE_PASSOWRD }}
-          GPG_PASSPHRASSE: ${{ secrets.GPG_PASSPHRASSE }}
-          SLACK_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}/slack # we are using this execution for `semantic-release-slack-bot` https://discord.com/developers/docs/resources/webhook#execute-slackcompatible-webhook
         with:
           extra_plugins: |
             gradle-semantic-release-plugin
