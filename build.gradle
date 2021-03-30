@@ -58,10 +58,10 @@ publishing {
     }
 }
 
-if (!"${version}".endsWith("-SNAPSHOT")) {
+if (System.getenv("CI") == "true") {
     apply plugin: 'signing'
     signing {
-        def key = new String(Base64.getDecoder().decode(
+        def key = new String(Base64.decoder.decode(
                 System.getenv("GPG_KEY").getBytes(Charset.defaultCharset())
         ), Charset.defaultCharset())
         def passphrase = System.getenv("GPG_PASSPHRASE")
