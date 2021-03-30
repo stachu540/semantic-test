@@ -8,6 +8,7 @@ on:
 
 env:
   CI: true
+  RELEASE: true
   GPG_KEY: ${{ secrets.GPG_KEY }}
   GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

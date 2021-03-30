@@ -61,7 +61,7 @@ publishing {
     }
 }
 
-if (System.getenv("CI") == "true") {
+if (System.getenv("RELEASE") == "true") {
     apply plugin: 'signing'
     signing {
         def key = new String(Base64.decoder.decode(
