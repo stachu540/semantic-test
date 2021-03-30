@@ -28,11 +28,14 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
-def defaultManifest = manifest
+def defaultManifest = tasks.named("manifest")
 
 tasks.withType(Jar) {
     dependsOn(defaultManifest)
     manifest.from(file("${buildDir}/resources/main/META-INF/MANIFEST.MF"))
+    if (it instanceof com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
+        archiveClassifier.set("shaded")
+    }
 }
 
 test {
