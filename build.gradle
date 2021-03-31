@@ -64,9 +64,7 @@ publishing {
 if (System.getenv("RELEASE") == "true") {
     apply plugin: 'signing'
     signing {
-        def key = new String(Base64.decoder.decode(
-                System.getenv("GPG_KEY").getBytes(Charset.defaultCharset())
-        ), Charset.defaultCharset())
+        def key = new String(Base64.decoder.decode(System.getenv("GPG_KEY").getBytes(Charset.defaultCharset())), Charset.defaultCharset())
         def passphrase = System.getenv("GPG_PASSPHRASE")
         useInMemoryPgpKeys(key, passphrase)
         sign(publishing.publications)
