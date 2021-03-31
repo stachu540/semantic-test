@@ -7,7 +7,6 @@ on:
         required: true
 
 env:
-  CI: true
   RELEASE: true
   GPG_KEY: ${{ secrets.GPG_KEY }}
   GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
@@ -35,8 +34,19 @@ jobs:
       - run: |
           chmod +x ./gradlew
           ./gradlew check
+      - uses: actions/github-script@v3.1.1
+        id: user
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const result await github.users.getByUsername({ username: context.actor });
+            return result;
       - uses: cycjimmy/semantic-release-action@v2.5.3
         env:
+          GIT_AUTHOR_NAME: ${{ steps.user.outputs.result.login }}
+          GIT_AUTHOR_EMAIL: ${{ steps.user.outputs.result.email }}
+          GIT_COMMITTER_NAME: ${{ steps.user.outputs.result.login }}
+          GIT_COMMITTER_EMAIL: ${{ steps.user.outputs.result.email }}
           RELEASE_NOTES: ${{ github.event.inputs.release_notes }}
         with:
           extra_plugins: |

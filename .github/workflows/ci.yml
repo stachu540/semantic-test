@@ -15,7 +15,6 @@ on:
       - ".editorconfig"
 
 env:
-  CI: true
   RELEASE: false
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

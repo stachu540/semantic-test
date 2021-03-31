@@ -4,16 +4,14 @@ module.exports = {
   plugins: [
     ['@semantic-release/commit-analyzer', {
       releaseRules: [
+        { type: 'refactor', release: 'major' },
+        { type: 'pref', release: 'minor' },
         { type: 'feat', release: 'minor' },
-        { type: 'feature', release: 'minor' },
-        { type: 'fix', release: 'minor' },
-        { type: 'bugfix', release: 'minor' },
+        { type: 'fix', release: 'patch' },
         { type: 'deps', release: 'patch' },
         { type: 'build', release: 'patch' },
         { type: 'chore', release: 'patch' },
-        { type: 'pref', release: 'minor' },
         { type: 'docs', scope: 'README', release: 'patch' },
-        { type: 'refactor', release: 'major' },
         { type: 'style', release: 'patch' }
       ],
       parserOpts: {
@@ -21,7 +19,20 @@ module.exports = {
       }
     }],
     ['@semantic-release/release-notes-generator',{
-      header: process.env.RELEASE_NOTES + "\n## Changelog"
+      presetConfig: {
+        header: "Changelog",
+        types: [
+          { type: 'refactor', section: 'Refactor', hidden: false },
+          { type: 'feat', section: 'Features', hidden: false },
+          { type: 'pref', section: 'Performance', hidden: false },
+          { type: 'fix', section: 'Bugs fixed', hidden: false },
+          { type: 'deps', section: 'Dependency Updates', hidden: false },
+          { type: 'chore', section: 'Conventional Changes', hidden: false },
+          { type: 'build', hidden: true },
+          { type: 'docs', hidden: true },
+          { type: 'style', hidden: true }
+        ]
+      }
     }],
     'gradle-semantic-release-plugin',
     ['@semantic-release/git', {
