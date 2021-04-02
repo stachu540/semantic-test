@@ -40,3 +40,4 @@ jobs:
           extra_plugins: |
             gradle-semantic-release-plugin
             @semantic-release/git
+            conventional-changelog-conventionalcommits

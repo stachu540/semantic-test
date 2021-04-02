@@ -1,13 +1,12 @@
 module.exports = {
-  preset: 'angular',
   branches: ['main'],
   plugins: [
     ['@semantic-release/commit-analyzer', {
       releaseRules: [
-        { type: 'refactor', release: 'major' },
-        { type: 'pref', release: 'minor' },
         { type: 'feat', release: 'minor' },
+        { type: 'pref', release: 'minor' },
         { type: 'fix', release: 'patch' },
+        { type: 'refactor', release: 'patch' },
         { type: 'deps', release: 'patch' },
         { type: 'build', release: 'patch' },
         { type: 'chore', release: 'patch' },
@@ -18,14 +17,18 @@ module.exports = {
         noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES']
       }
     }],
-    ['@semantic-release/release-notes-generator',{
+    ['@semantic-release/release-notes-generator', {
+      preset: 'conventionalcommits',
+      parserOpts: {
+        noteKeywords: ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
+      },
       presetConfig: {
         header: "Changelog",
         types: [
-          { type: 'refactor', section: 'Refactor', hidden: false },
           { type: 'feat', section: 'Features', hidden: false },
           { type: 'pref', section: 'Performance', hidden: false },
           { type: 'fix', section: 'Bugs fixed', hidden: false },
+          { type: 'refactor', section: 'Refactor', hidden: false },
           { type: 'deps', section: 'Dependency Updates', hidden: false },
           { type: 'chore', section: 'Conventional Changes', hidden: false },
           { type: 'build', hidden: true },
