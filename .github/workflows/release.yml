@@ -24,19 +24,20 @@ jobs:
             ~/.gradle/wrapper
           key: JDK8-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: JDK8-gradle-
-      - uses: actions/setup-java@v1.4.3
+      - uses: actions/setup-java@v1.4.2
         name: Setup JDK8
         with:
           java-version: 8
-      - uses: actions/setup-node@v2.1.5
+      - uses: actions/setup-node@v2.1.4
         name: Setup NodeJS
       - name: Pre-Release Test
         run: |
           chmod +x ./gradlew
           ./gradlew check
-      - uses: cycjimmy/semantic-release-action@v2.5.3
+      - uses: cycjimmy/semantic-release-action@v2.5.2
         name: Release
         with:
+          branch: main
           extra_plugins: |
             gradle-semantic-release-plugin
             @semantic-release/git
