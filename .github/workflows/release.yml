@@ -28,7 +28,7 @@ jobs:
         name: Setup JDK8
         with:
           java-version: 8
-      - uses: actions/setup-node@v2.1.5
+      - uses: actions/setup-node@v2.4.0
         name: Setup NodeJS
       - name: Pre-Release Test
         run: |
