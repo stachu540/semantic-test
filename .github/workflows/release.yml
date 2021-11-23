@@ -16,7 +16,7 @@ jobs:
         name: Checkout
         with:
           ref: main
-      - uses: actions/cache@v2.1.4
+      - uses: actions/cache@v2.1.7
         name: Gradle Cache JDK8
         with:
           path: |
