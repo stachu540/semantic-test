@@ -34,7 +34,7 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew check
-      - uses: cycjimmy/semantic-release-action@v2.5.3
+      - uses: cycjimmy/semantic-release-action@v2.7.0
         name: Release
         with:
           branch: main
